@@ -1,5 +1,6 @@
 package Screen;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,6 +15,7 @@ public class TopMenu implements Menu {
 	private ZaikoKanri zaiko;
 	private Scanner sc;
 	private Shop ai;
+	private LocalDate today=LocalDate.now();
 
 	public TopMenu(ZaikoKanri zaikoKanri, Scanner sc, Shop manager) {
 		this.zaiko = zaikoKanri;
@@ -32,6 +34,8 @@ public class TopMenu implements Menu {
 		Guest guest = productGuest(list);
 
 		while (found) {
+			
+			System.out.println("今日は----"+today+"");
 
 			String text = """
 					レンタルDVD
@@ -53,14 +57,17 @@ public class TopMenu implements Menu {
 
 			//続き
 			switch (select) {
-			case 1 -> dispSubMenu(new RentalMenu(zaiko, guest, ai));
+			case 1 -> dispSubMenu(new RentalMenu(zaiko, guest, ai,today));
 			case 2 -> dispSubMenu(new ReturnMenu(guest, ai));
 			case 3 -> dispSubMenu(new Search(guest, zaiko));
 			case 4 -> dispSubMenu(new Register(guest, ai));
-			case 5 -> dispSubMenu(new Check(guest));
+			case 5 -> dispSubMenu(new Check(guest,today));
 			case 6 -> guest = productGuest(list);
 
-			case 7 -> dispSubMenu(new EndDay(guest));
+			case 7 -> {
+				dispSubMenu(new EndDay(guest,today));
+				today=today.plusDays(1);
+			}
 
 			case 8 -> {
 

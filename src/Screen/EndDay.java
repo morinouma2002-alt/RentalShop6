@@ -1,5 +1,6 @@
 package Screen;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,9 +11,11 @@ import Guest.GuestStatus;
 public class EndDay implements Menu {
 
 	private Guest guest;
+	private LocalDate today;
 
-	public EndDay(Guest guest) {
+	public EndDay(Guest guest,LocalDate today) {
 		this.guest = guest;
+		this.today=today;
 	}
 
 	@Override
@@ -30,7 +33,7 @@ public class EndDay implements Menu {
 		boolean wasNormal = guest.getStatus() == GuestStatus.NORMAL;
 
 		for (DVD dvd : dvdSave) {
-			dvd.setOneDay();
+			dvd.setOneDay(today);
 			guest.checkOverDay(dvd);//延滞なら同じ客の状態が延滞客に変わる
 		}
 

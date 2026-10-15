@@ -1,4 +1,5 @@
 package Screen;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,11 +12,15 @@ public class RentalMenu implements Menu {
 	private ZaikoKanri zaiko;
 	private Guest guest =null;
 	private Shop manager;
+	private LocalDate today;
 	
-	public RentalMenu(ZaikoKanri zaiko,Guest guest,Shop manager) {
+	private LocalDate rentedDay;
+	
+	public RentalMenu(ZaikoKanri zaiko,Guest guest,Shop manager,LocalDate today) {
 		this.zaiko = zaiko;
 		this.guest=guest;
 		this.manager=manager;
+		this.today=today;
 	}
 	
 	//★★ここで、貸出処理を変える 違うメソッドのふりをする
@@ -39,7 +44,6 @@ public class RentalMenu implements Menu {
 			dvd[i].display();
 		}
 
-		//ユーティリティーティ　クラス　ちぇえくユーティリティー
 		int n = InputHelper.readInt(sc, 1, dvd.length) - 1;//範囲外は入力し直し
 
 		DVD dOne =dvd[n]; //dOneで一商品取り出している
@@ -52,9 +56,10 @@ public class RentalMenu implements Menu {
 			return;
 		}
 		
-		manager.cal(dOne.getValue(),guest.getResister());
+		//enum DVDPriceを呼び出す
+		manager.cal(dOne.getType(),guest.getResister());
 	
-		dOne.rented();
+		dOne.rented(today);
 		dvdSave.add(dOne);//List<DVD> dvdSaveにどんどんレンタルしていく
 	}
 	

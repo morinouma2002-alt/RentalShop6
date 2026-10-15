@@ -1,4 +1,5 @@
 package Screen;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,8 +11,11 @@ public class Check implements Menu{
 
 	Guest guest;
 	
-	public Check(Guest guest) {
-		this.guest=guest;
+	private LocalDate today;
+
+	public Check(Guest guest, LocalDate today) {
+	    this.guest = guest;
+	    this.today = today;
 	}
 	
 	@Override
@@ -25,6 +29,12 @@ public class Check implements Menu{
 			System.out.println("現在借りているのは");
 			for (DVD d : dvdSave) {
 				System.out.println(d.getName() + "\s" + d.getValue());
+				
+				System.out.println("返却日;"+d.getDate());
+				if(d.getDate().isBefore(today)) {
+					System.out.println("返却期限をすぎています");
+				}
+				
 			}
 		}
 

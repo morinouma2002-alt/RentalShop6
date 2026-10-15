@@ -1,5 +1,6 @@
 package Guest;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,6 +20,7 @@ public class Guest {
 
 	//客の状態はこの1つだけで管理する。始めは通常客
 	private GuestStatus status = GuestStatus.NORMAL;
+	private GuestRank rank =GuestRank.NORMAL;
 
 	//guestが借りた、商品を貯める
 	protected List<DVD> dvdSave = new ArrayList<>();

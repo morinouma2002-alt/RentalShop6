@@ -1,5 +1,6 @@
 package DVD;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,13 +11,15 @@ public class DVD {
 	private String name;
 	private String value11;
 	private String direc;
-	private int value;
+	
+	private DVDPrice type;
 	private boolean rented = true;//現在借りられていない場合はtrue
 
 	
 	//返却日の管理
 	private int oneDay = 0;
 	private boolean overDay = false; 
+	private LocalDate rentedDay;
 	
 	List<Detail> list =new ArrayList<>();
 	public DVD(String name, String director, String value, int month, int day) {
@@ -27,11 +30,11 @@ public class DVD {
 		
 		
 		if(value.equals("新作")) {
-			this.value=1;
+			this.type=DVDPrice.NEW;
 		}else if(value.equals("普通")) {
-			this.value=2;
+			this.type=DVDPrice.NORAML;
 		}else if(value.equals("旧作")){
-			this.value=3;
+			this.type=DVDPrice.OlD;
 		}else {
 			System.out.println("初期化できませんでした");
 			return;
@@ -45,8 +48,8 @@ public class DVD {
 		return name;
 	}
 
-	public int getValue() {
-		return value;
+	public DVDPrice getType() {
+		return type;
 	}
 	
 	public String getDirec() {
@@ -64,14 +67,24 @@ public class DVD {
 	public List<Detail> getDetail(){
 		return list;
 	}
+	
+	public LocalDate getDate() {
+		//unmodifiableListは　LocalDateに適用されない
+		return rentedDay;
+	}
 
-	public void setOneDay() {
-		oneDay++;
+	public void setOneDay(LocalDate today) {
+		
+		if(today.isAfter(rentedDay)){
+			System.out.println("延滞客に分類されます");
+			overDay=true;
+		}
+		/*oneDay++;
 
 		if (oneDay > 2) {
 			System.out.println("あなたは、延滞客に分類されます");
 			overDay = true;
-		}
+		}*/
 	}
 
 	public void returnRented() {
@@ -80,13 +93,15 @@ public class DVD {
 		overDay=false;
 	}
 
-	public void rented() {
+	public void rented(LocalDate today) {
 
 		if (rented == false) {
 			System.out.println("その作品は、借りられているので無理です");
 			return;
 		}
 		rented = false;//借りられた
+		this.rentedDay=today.plusDays(7);
+		System.out.println("返却日は"+rentedDay+"です");
 
 	}
 
